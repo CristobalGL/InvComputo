@@ -17,7 +17,7 @@
                     <p class="card-text">
                         <strong>Código:</strong> <span th:text="${e.codigo}"></span><br>
                         <strong>Tipo:</strong> <span th:text="${e.tipo}"></span><br>
-                        <strong>Responsable:</strong> <span th:text="${e.responsable} ?: 'Sin asignar'}"></span>
+                        <strong>Responsable:</strong> <span th:text="${e.responsable != null ? e.responsable : 'Sin asignar'}"></span>
                     </p>
                     <a th:href="@{/generar/pdf/resguardo(id=${e.id})}" 
                        class="btn btn-success">

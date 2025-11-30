@@ -2,7 +2,6 @@ package com.inventario.controller;
 
 import com.inventario.model.Equipo;
 import com.inventario.service.EquipoService;
-import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -20,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import com.itextpdf.layout.borders.Border;
 
 @Controller
 public class FormatoController {
