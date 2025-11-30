@@ -15,10 +15,10 @@ public class EquipoController {
         this.equipoService = equipoService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/equipos")
     public String listarEquipos(Model model) {
         model.addAttribute("equipos", equipoService.listarTodos());
         model.addAttribute("titulo", "Inventario de Cómputo");
-        return "index";  // → templates/index.html
+        return "equipos";  // → templates/equipos.html
     }
 }
