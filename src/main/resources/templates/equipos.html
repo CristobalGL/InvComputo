@@ -8,43 +8,48 @@
 <body class="bg-light">
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3" th:text="${titulo}">Inventario de Cómputo</h1>
+        <h1 class="h3">Inventario de Cómputo</h1>
         <div>
-            <a href="/dashboard" class="btn btn-outline-primary me-2">
-                Volver al Dashboard
+            <!-- Botón NUEVO solo para ADMIN -->
+            <a th:if="${@securityConfig.isAdmin()}" 
+                href="/equipos/nuevo" class="btn btn-success me-2">
+                Agregar Equipo
             </a>
-            <a href="/login" class="btn btn-outline-danger">
-                Cerrar Sesión
-            </a>
+
+            <a href="/dashboard" class="btn btn-outline-primary me-2">Dashboard</a>
+            <a href="/login" class="btn btn-outline-danger">Cerrar Sesión</a>
         </div>
     </div>
 
     <table class="table table-striped table-hover shadow-sm">
         <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Código</th>
-            <th>Tipo</th>
-            <th>Marca</th>
-            <th>Modelo</th>
-            <th>Responsable</th>
-        </tr>
+            <tr>
+                <th>ID</th>
+                <th>Código</th>
+                <th>Tipo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Responsable</th>
+                <th th:if="${@securityConfig.isAdmin()}">Acciones</th>
+            </tr>
         </thead>
         <tbody>
-        <tr th:each="e : ${equipos}">
-            <td th:text="${e.id}"></td>
-            <td th:text="${e.codigo}"></td>
-            <td th:text="${e.tipo}"></td>
-            <td th:text="${e.marca}"></td>
-            <td th:text="${e.modelo}"></td>
-            <td th:text="${e.responsable} ?: 'Sin asignar'"></td>
-        </tr>
+            <tr th:each="e : ${equipos}">
+                <td th:text="${e.id}"></td>
+                <td th:text="${e.codigo}"></td>
+                <td th:text="${e.tipo}"></td>
+                <td th:text="${e.marca}"></td>
+                <td th:text="${e.modelo}"></td>
+                <td th:text="${e.responsable} ?: 'Sin asignar'"></td>
+
+                <!-- Acciones solo para ADMIN -->
+                <td th:if="${@securityConfig.isAdmin()}">
+                    <a th:href="@{/equipos/editar/{id}(id=${e.id})}" class="btn btn-warning btn-sm">Editar</a>
+                    <a th:href="@{/equipos/eliminar/{id}(id=${e.id})}" 
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('¿Seguro que deseas eliminar este equipo?')">Eliminar</a>
+                </td>
+            </tr>
         </tbody>
     </table>
-
-    <div th:if="${#lists.isEmpty(equipos)}" class="text-center text-muted py-5">
-        <h4>No hay equipos registrados aún</h4>
-    </div>
 </div>
-</body>
-</html>

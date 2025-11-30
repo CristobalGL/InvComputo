@@ -10,6 +10,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Configuration
 public class SecurityConfig {
@@ -19,7 +21,12 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                .anyRequest().authenticated()   // Todo lo demás requiere login
+
+                // Rutas que SOLO el ADMIN puede usar
+                .requestMatchers("/equipos/nuevo", "/equipos/guardar", "/equipos/editar/**", "/equipos/eliminar/**").hasRole("ADMIN")
+
+                // Todo lo demás: cualquiera autenticado (USER o ADMIN)
+                .anyRequest().authenticated()
             )
             .formLogin(form -> form
                 .loginPage("/login")             // Página de login
@@ -37,23 +44,37 @@ public class SecurityConfig {
     // Usuarios en memoria (cambia por base de datos mas adelante)
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails usuario1 = User.builder()
+        UserDetails admin = User.builder()
                 .username("admin")
-                .password(passwordEncoder().encode("123456"))
-                .roles("ADMIN")
+                .password(passwordEncoder().encode("admin123"))
+                .roles("ADMIN")           // tiene rol ADMIN
                 .build();
 
-        UserDetails usuario2 = User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("user"))
+        UserDetails usuarioNormal = User.builder()
+                .username("juan")
+                .password(passwordEncoder().encode("juan2025"))
+                .roles("USER")            // solo rol USER
+                .build();
+
+        UserDetails maria = User.builder()
+                .username("maria")
+                .password(passwordEncoder().encode("maria2025"))
                 .roles("USER")
                 .build();
 
-        return new InMemoryUserDetailsManager(usuario1, usuario2);
+        return new InMemoryUserDetailsManager(admin, usuarioNormal, maria);
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public static boolean isAdmin() {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth != null && 
+            auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
     }
 }
