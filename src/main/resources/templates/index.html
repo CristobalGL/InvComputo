@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Inventario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h1 class="text-center mb-4" th:text="${titulo}">Inventario de Cómputo</h1>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Código</th>
+            <th>Tipo</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Responsable</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="e : ${equipos}">
+            <td th:text="${e.id}"></td>
+            <td th:text="${e.codigo}"></td>
+            <td th:text="${e.tipo}"></td>
+            <td th:text="${e.marca}"></td>
+            <td th:text="${e.modelo}"></td>
+            <td th:text="${e.responsable} ?: 'Sin asignar'"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

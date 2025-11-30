@@ -2,34 +2,29 @@ package com.inventario.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Table(name = "equipo")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
 public class Equipo {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true, length = 50)
     private String codigo;
 
+    @Column(nullable = false, length = 50)
     private String tipo;
+
+    @Column(nullable = false, length = 50)
     private String marca;
+
+    @Column(nullable = false, length = 100)
     private String modelo;
+
+    @Column(length = 100)
     private String responsable;
-
-    public Equipo() {}
-
-    // Getters & Setters
-
-    public String getCodigo() { return codigo; }
-    public void setCodigo(String codigo) { this.codigo = codigo; }
-
-    public String getTipo() { return tipo; }
-    public void setTipo(String tipo) { this.tipo = tipo; }
-
-    public String getMarca() { return marca; }
-    public void setMarca(String marca) { this.marca = marca; }
-
-    public String getModelo() { return modelo; }
-    public void setModelo(String modelo) { this.modelo = modelo; }
-
-    public String getResponsable() { return responsable; }
-    public void setResponsable(String responsable) { this.responsable = responsable; }
 }

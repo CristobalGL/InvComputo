@@ -1,21 +1,24 @@
 package com.inventario.controller;
 
-import com.inventario.model.Equipo;
 import com.inventario.service.EquipoService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-@RestController
-@RequestMapping("/api/equipos")
+@Controller
 public class EquipoController {
 
-    private final EquipoService service;
+    private final EquipoService equipoService;
 
-    public EquipoController(EquipoService service) {
-        this.service = service;
+    // Inyección por constructor (la forma moderna y recomendada)
+    public EquipoController(EquipoService equipoService) {
+        this.equipoService = equipoService;
     }
 
-    @GetMapping("/{codigo}")
-    public Equipo obtenerEquipo(@PathVariable String codigo) {
-        return service.buscarPorCodigo(codigo);
+    @GetMapping("/")
+    public String listarEquipos(Model model) {
+        model.addAttribute("equipos", equipoService.listarTodos());
+        model.addAttribute("titulo", "Inventario de Cómputo");
+        return "index";  // → templates/index.html
     }
 }
