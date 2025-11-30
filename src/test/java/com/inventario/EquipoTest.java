@@ -1,4 +1,4 @@
-package test.java.com.inventario;
+package com.inventario;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
