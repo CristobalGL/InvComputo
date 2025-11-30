@@ -2,7 +2,6 @@ package com.inventario.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +22,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated()   // Todo lo demás requiere login
             )
             .formLogin(form -> form
-                .loginPage("/login")             // Página de login personalizada
-                .defaultSuccessUrl("/", true)    // Después de login → va a la tabla
+                .loginPage("/login")             // Página de login
+                .defaultSuccessUrl("/dashboard", true)    // Después de login → va al menu
                 .permitAll()
             )
             .logout(logout -> logout
