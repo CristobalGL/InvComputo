@@ -1,7 +1,5 @@
 package com.inventario.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,4 +25,7 @@ public class Equipo {
 
     @Column(length = 100)
     private String responsable;
+
+    @Column(name = "inventario_id")
+    private Long inventarioId;
 }

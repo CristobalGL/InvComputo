@@ -1,17 +1,25 @@
 package com.inventario.service;
 
 import com.inventario.model.Equipo;
+import com.inventario.model.Usuario;
 import com.inventario.repository.EquipoRepository;
+import com.inventario.repository.UsuarioRepository;
+
+
 import org.springframework.stereotype.Service;
 import java.util.Optional;
+import java.util.List;
+
 
 @Service
 public class EquipoService {
 
     private final EquipoRepository repository;
+    private final UsuarioRepository usuarioRepository;
 
-    public EquipoService(EquipoRepository repository) {
+    public EquipoService(EquipoRepository repository, UsuarioRepository usuarioRepository) {
         this.repository = repository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     // Buscar por ID (Long) → método estándar de JpaRepository
@@ -36,5 +44,19 @@ public class EquipoService {
 
     public void eliminar(Long id) {
         repository.deleteById(id);
+    }
+
+    public List<Equipo> obtenerEquiposSegunUsuario(String correoUsuario) {
+
+        Usuario usuario = usuarioRepository.findByCorreo(correoUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Si NO tiene inventario asignado → ve TODO
+        if (usuario.getInventarioAsignado() == null) {
+            return repository.findAll();
+        }
+
+        // Si SÍ tiene asignado → solo ese inventario
+        return repository.findByInventarioId(usuario.getInventarioAsignado());
     }
 }

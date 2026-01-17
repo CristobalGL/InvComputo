@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title th:text="${titulo}">Inventario</title>
@@ -11,7 +12,7 @@
         <h1 class="h3">Inventario de Cómputo</h1>
         <div>
             <!-- Botón NUEVO solo para ADMIN -->
-            <a th:if="${@securityConfig.isAdmin()}" 
+            <a sec:authorize="hasRole('ADMIN')" 
                 href="/equipos/nuevo" class="btn btn-success me-2">
                 Agregar Equipo
             </a>
@@ -30,7 +31,8 @@
                 <th>Marca</th>
                 <th>Modelo</th>
                 <th>Responsable</th>
-                <th th:if="${@securityConfig.isAdmin()}">Acciones</th>
+                <th>Inventario</th>
+                <th sec:authorize="hasRole('ADMIN')">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -41,9 +43,10 @@
                 <td th:text="${e.marca}"></td>
                 <td th:text="${e.modelo}"></td>
                 <td th:text="${e.responsable} ?: 'Sin asignar'"></td>
+                <td th:text="${e.inventarioId}"></td>
 
                 <!-- Acciones solo para ADMIN -->
-                <td th:if="${@securityConfig.isAdmin()}">
+                <td sec:authorize="hasRole('ADMIN')">
                     <a th:href="@{/equipos/editar/{id}(id=${e.id})}" class="btn btn-warning btn-sm">Editar</a>
                     <a th:href="@{/equipos/eliminar/{id}(id=${e.id})}" 
                         class="btn btn-danger btn-sm"

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.core.Authentication;
+import java.util.List;
 
 @Controller
 public class EquipoController {
@@ -19,9 +21,24 @@ public class EquipoController {
     }
 
     @GetMapping("/equipos")
-    public String listarEquipos(Model model) {
-        model.addAttribute("equipos", equipoService.listarTodos());
+    public String listarEquipos(Model model, Authentication auth) {
+
+        String correo = auth.getName(); // usuario logueado
+
+        List<Equipo> equipos;
+
+        if (auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+            // ADMIN ve TODO
+            equipos = (List<Equipo>) equipoService.listarTodos();
+        } else {
+            // USUARIO ve solo SU inventario
+            equipos = equipoService.obtenerEquiposSegunUsuario(correo);
+        }
+
+        model.addAttribute("equipos", equipos);
         model.addAttribute("titulo", "Inventario de Cómputo");
+
         return "equipos";
     }
 
