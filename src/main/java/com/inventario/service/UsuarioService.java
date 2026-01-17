@@ -1,6 +1,5 @@
 package com.inventario.service;
 
-import com.inventario.model.Usuario;
 import com.inventario.repository.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
