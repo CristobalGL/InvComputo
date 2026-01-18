@@ -32,7 +32,8 @@
                 <th>Modelo</th>
                 <th>Responsable</th>
                 <th>Inventario</th>
-                <th sec:authorize="hasRole('ADMIN')">Acciones</th>
+                <th>Editar</th>
+                <th sec:authorize="hasRole('ADMIN')">Eliminar</th>
             </tr>
         </thead>
         <tbody>
@@ -45,12 +46,21 @@
                 <td th:text="${e.responsable} ?: 'Sin asignar'"></td>
                 <td th:text="${e.inventarioId}"></td>
 
-                <!-- Acciones solo para ADMIN -->
+                <!-- EDITAR: visible para TODOS -->
+                <td>
+                    <a th:href="@{/equipos/editar/{id}(id=${e.id})}"
+                    class="btn btn-warning btn-sm">
+                    Editar
+                    </a>
+                </td>
+
+                <!-- ELIMINAR: solo ADMIN -->
                 <td sec:authorize="hasRole('ADMIN')">
-                    <a th:href="@{/equipos/editar/{id}(id=${e.id})}" class="btn btn-warning btn-sm">Editar</a>
                     <a th:href="@{/equipos/eliminar/{id}(id=${e.id})}" 
-                        class="btn btn-danger btn-sm"
-                        onclick="return confirm('¿Seguro que deseas eliminar este equipo?')">Eliminar</a>
+                    class="btn btn-danger btn-sm"
+                    onclick="return confirm('¿Seguro que deseas eliminar este equipo?')">
+                    Eliminar
+                    </a>
                 </td>
             </tr>
         </tbody>

@@ -51,7 +51,7 @@ public class EquipoController {
     }
 
     @PostMapping("/equipos/guardar")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDINADOR','USER')")
     public String guardarEquipo(@ModelAttribute Equipo equipo, RedirectAttributes flash) {
         equipoService.guardar(equipo);
         flash.addFlashAttribute("mensaje", 
@@ -61,7 +61,7 @@ public class EquipoController {
     }
 
     @GetMapping("/equipos/editar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDINADOR','USER')")
     public String editarEquipo(@PathVariable Long id, Model model, RedirectAttributes flash) {
         return equipoService.buscarPorId(id)
             .map(equipo -> {

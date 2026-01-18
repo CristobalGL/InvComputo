@@ -23,8 +23,11 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/css/**", "/js/**", "/images/**").permitAll()
+                // Editar para Admin y User
+                .requestMatchers("/equipos/editar/**").hasAnyRole("ADMIN","COORDINADOR","USER")
+                .requestMatchers("/equipos/guardar").hasAnyRole("ADMIN","COORDINADOR","USER")
                 // Rutas que SOLO el ADMIN puede usar
-                .requestMatchers("/equipos/nuevo", "/equipos/guardar", "/equipos/editar/**", "/equipos/eliminar/**").hasRole("ADMIN")
+                .requestMatchers("/equipos/nuevo", "/equipos/guardar", "/equipos/eliminar/**").hasRole("ADMIN")
                 // Todo lo demás: cualquiera autenticado (USER o ADMIN)
                 .anyRequest().authenticated()
             )
