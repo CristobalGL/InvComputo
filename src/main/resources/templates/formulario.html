@@ -77,6 +77,26 @@
                 </div>
             </div>
 
+            <!-- SOLO ADMIN PUEDE VER Y EDITAR -->
+            <div class="col-md-6" sec:authorize="hasRole('ADMIN')">
+                <label class="form-label fw-bold">
+                    Inventario ID <span class="text-danger">*</span>
+                </label>
+                <input type="number"
+                    class="form-control"
+                    th:field="*{inventarioId}"
+                    required
+                    min="1"/>
+                <div class="invalid-feedback">
+                    El Inventario ID es obligatorio
+                </div>
+            </div>
+
+            <!-- PARA USUARIOS NO ADMIN: se manda el valor SIN mostrarlo -->
+            <input type="hidden"
+                sec:authorize="!hasRole('ADMIN')"
+                th:field="*{inventarioId}"/>
+
             <div class="mt-4 text-end">
                 <button type="submit" class="btn btn-primary btn-lg px-5">
                     <i class="fas fa-save me-2"></i>
