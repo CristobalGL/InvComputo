@@ -38,13 +38,16 @@
         <form th:action="@{/equipos/guardar}" th:object="${equipo}" method="post" class="needs-validation" novalidate>
             <input type="hidden" th:field="*{id}"/>
 
+            
             <div class="row g-3">
+                <!-- CODIGO -->
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Código <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" th:field="*{codigo}" required maxlength="50"/>
                     <div class="invalid-feedback">El código es obligatorio</div>
                 </div>
 
+                <!-- TIPO -->
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Tipo <span class="text-danger">*</span></label>
                     <select class="form-select" th:field="*{tipo}" required>
@@ -59,22 +62,77 @@
                     <div class="invalid-feedback">Selecciona un tipo</div>
                 </div>
 
+                <!-- MARCA -->
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Marca <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" th:field="*{marca}" required/>
                     <div class="invalid-feedback">La marca es obligatoria</div>
                 </div>
-
+                
+                <!-- MODELO -->
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Modelo <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" th:field="*{modelo}" required/>
                     <div class="invalid-feedback">El modelo es obligatorio</div>
                 </div>
+                
+                <!-- SERIE -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Serie</label>
+                    <input type="text"
+                        class="form-control"
+                        th:field="*{serie}"
+                        maxlength="100"/>
+                </div>
 
+                <!-- ESTATUS -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Estatus</label>
+                    <select class="form-select" th:field="*{estatus}">
+                        <option value="">-- Seleccionar --</option>
+                        <option value="Activo">Activo</option>
+                        <option value="En reparación">En reparación</option>
+                        <option value="Baja">Baja</option>
+                        <option value="Resguardo">Resguardo</option>
+                    </select>
+                </div>
+
+                <!-- NÚMERO DE EMPLEADO -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">No. Empleado</label>
+                    <input type="text"
+                        class="form-control"
+                        th:field="*{noEmpleado}"
+                        maxlength="50"/>
+                </div>
+
+                <!-- RESOPONSABLE -->
                 <div class="col-12">
                     <label class="form-label fw-bold">Responsable</label>
                     <input type="text" class="form-control" th:field="*{responsable}" placeholder="Opcional"/>
                 </div>
+
+                <!-- PUESTO -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Puesto</label>
+                    <input type="text"
+                        class="form-control"
+                        th:field="*{puesto}"
+                        maxlength="100"/>
+                </div>
+
+                <!-- LOCALIDAD -->
+                <div class="col-md-6" sec:authorize="hasRole('ADMIN')">
+                    <label class="form-label fw-bold">Localidad</label>
+                    <input type="text"
+                        class="form-control"
+                        th:field="*{localidad}"
+                        maxlength="100"/>
+                </div>
+                <input type="hidden"
+                sec:authorize="!hasRole('ADMIN')"
+                th:field="*{localidad}"/>
+
             </div>
 
             <!-- SOLO ADMIN PUEDE VER Y EDITAR -->
