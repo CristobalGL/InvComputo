@@ -17,7 +17,12 @@
                     <p class="card-text">
                         <strong>Código:</strong> <span th:text="${e.codigo}"></span><br>
                         <strong>Tipo:</strong> <span th:text="${e.tipo}"></span><br>
-                        <strong>Responsable:</strong> <span th:text="${e.responsable != null ? e.responsable : 'Sin asignar'}"></span>
+                        <strong>Serie:</strong> <span th:text="${e.serie ?: 'N/A'}"></span><br>
+                        <strong>Estatus:</strong> <span th:text="${e.estatus ?: 'N/A'}"></span><br>
+                        <strong>No. Empleado:</strong> <span th:text="${e.noEmpleado ?: 'N/A'}"></span><br>
+                        <strong>Responsable:</strong> <span th:text="${e.responsable ?: 'Sin asignar'}"></span><br>
+                        <strong>Puesto:</strong> <span th:text="${e.puesto ?: 'N/A'}"></span><br>
+                        <strong>Localidad:</strong> <span th:text="${e.localidad ?: 'N/A'}"></span>
                     </p>
                     <a th:href="@{/generar/pdf/resguardo(id=${e.id})}" 
                        class="btn btn-success">

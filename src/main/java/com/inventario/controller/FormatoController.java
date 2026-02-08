@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import java.security.Principal;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -40,9 +40,12 @@ public class FormatoController {
 
     // Paso 2: generar el PDF
     @GetMapping("/generar/pdf/resguardo")
-    public void generarResguardo(@RequestParam Long id, HttpServletResponse response) throws IOException {
+    public void generarResguardo(@RequestParam Long id,
+                             HttpServletResponse response,
+                             Principal principal) throws IOException {
         Equipo equipo = equipoService.buscarPorId(id).orElseThrow();
-
+        String usuarioEntrega = principal.getName();
+                                
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=\"FO-MI-01_" + equipo.getCodigo() + ".pdf\"");
 
@@ -80,14 +83,15 @@ public class FormatoController {
         table.addCell(crearCelda("Modelo:"));
         table.addCell(crearCelda(equipo.getModelo()));
 
-        table.addCell(crearCelda("No. de serie (si aplica):"));
-        table.addCell(crearCelda("-"));
+        table.addCell(crearCelda("No. de serie:"));
+        table.addCell(crearCelda(
+                equipo.getSerie() != null ? equipo.getSerie() : "N/A"
+        ));
 
-        table.addCell(crearCelda("Responsable / Usuario:"));
-        table.addCell(crearCelda(equipo.getResponsable() != null ? equipo.getResponsable() : "____________________"));
-
-        table.addCell(crearCelda("Fecha de entrega:"));
-        table.addCell(crearCelda(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+        table.addCell(crearCelda("Localidad:"));
+        table.addCell(crearCelda(
+                equipo.getLocalidad() != null ? equipo.getLocalidad() : "N/A"
+        ));
 
         document.add(table);
 
@@ -103,14 +107,30 @@ public class FormatoController {
         // Líneas de firma
         Table firmas = new Table(2);
         firmas.setWidth(500);
+
+        // Encabezados
         firmas.addCell(crearCeldaFirma("ENTREGA"));
         firmas.addCell(crearCeldaFirma("RECIBE"));
-        firmas.addCell(crearCeldaFirma("Nombre: ___________________________"));
-        firmas.addCell(crearCeldaFirma("Nombre: " + (equipo.getResponsable() != null ? equipo.getResponsable() : "___________________________")));
-        firmas.addCell(crearCeldaFirma("Cargo: ____________________________"));
-        firmas.addCell(crearCeldaFirma("Cargo: _________________________________"));
-        firmas.addCell(crearCeldaFirma("Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
-        firmas.addCell(crearCeldaFirma("Fecha: ________________________________"));
+
+        // Nombres automáticos
+        firmas.addCell(crearCeldaFirma("Nombre: " + usuarioEntrega));
+        firmas.addCell(crearCeldaFirma("Nombre: " +
+                (equipo.getResponsable() != null ? equipo.getResponsable() : "N/A")));
+
+        // Puestos automáticos
+        firmas.addCell(crearCeldaFirma("Cargo: " +
+                (equipo.getPuesto() != null ? equipo.getPuesto() : "N/A")));
+        firmas.addCell(crearCeldaFirma("Cargo: " +
+                (equipo.getPuesto() != null ? equipo.getPuesto() : "N/A")));
+
+        // Fechas automáticas
+        String fechaHoy = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        firmas.addCell(crearCeldaFirma("Fecha: " + fechaHoy));
+        firmas.addCell(crearCeldaFirma("Fecha: " + fechaHoy));
+
+        // Líneas de firma
+        firmas.addCell(crearCeldaFirma("Firma: ______________________________"));
+        firmas.addCell(crearCeldaFirma("Firma: ______________________________"));
 
         document.add(firmas);
 
