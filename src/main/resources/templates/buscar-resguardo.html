@@ -9,28 +9,46 @@
 <div class="container py-5">
     <h2 class="text-center mb-4 text-primary">Generar FO-MI-01 - Resguardo de Equipo</h2>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div th:each="e : ${equipos}" class="col">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                    <h5 class="card-title" th:text="${e.marca + ' ' + e.modelo}"></h5>
-                    <p class="card-text">
-                        <strong>Código:</strong> <span th:text="${e.codigo}"></span><br>
-                        <strong>Tipo:</strong> <span th:text="${e.tipo}"></span><br>
-                        <strong>Serie:</strong> <span th:text="${e.serie ?: 'N/A'}"></span><br>
-                        <strong>Estatus:</strong> <span th:text="${e.estatus ?: 'N/A'}"></span><br>
-                        <strong>No. Empleado:</strong> <span th:text="${e.noEmpleado ?: 'N/A'}"></span><br>
-                        <strong>Responsable:</strong> <span th:text="${e.responsable ?: 'Sin asignar'}"></span><br>
-                        <strong>Puesto:</strong> <span th:text="${e.puesto ?: 'N/A'}"></span><br>
-                        <strong>Localidad:</strong> <span th:text="${e.localidad ?: 'N/A'}"></span>
-                    </p>
-                    <a th:href="@{/generar/pdf/resguardo(id=${e.id})}" 
-                       class="btn btn-success">
-                        Descargar FO-MI-01
-                    </a>
-                </div>
-            </div>
-        </div>
+    <div class="table-responsive shadow-sm">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Código</th>
+                    <th>Tipo</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Serie</th>
+                    <th>Estatus</th>
+                    <th>No. Empleado</th>
+                    <th>Responsable</th>
+                    <th>Puesto</th>
+                    <th>Localidad</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="e : ${equipos}">
+                    <td th:text="${e.codigo}"></td>
+                    <td th:text="${e.tipo}"></td>
+                    <td th:text="${e.marca}"></td>
+                    <td th:text="${e.modelo}"></td>
+                    <td th:text="${e.serie ?: 'N/A'}"></td>
+                    <td th:text="${e.estatus ?: 'N/A'}"></td>
+                    <td th:text="${e.noEmpleado ?: 'N/A'}"></td>
+                    <td th:text="${e.responsable ?: 'Sin asignar'}"></td>
+                    <td th:text="${e.puesto ?: 'N/A'}"></td>
+                    <td th:text="${e.localidad ?: 'N/A'}"></td>
+
+                    <td>
+                        <a th:href="@{/generar/pdf/resguardo(id=${e.id})}"
+                        class="btn btn-success btn-sm">
+                            Descargar
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div class="text-center mt-4">
