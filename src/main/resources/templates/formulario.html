@@ -65,14 +65,34 @@
                 <!-- MARCA -->
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Marca <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" th:field="*{marca}" required/>
+                    <select class="form-select" th:field="*{marca}" required>
+                        <option value="">-- Seleccionar marca --</option>
+                        <option value="HP">HP</option>
+                        <option value="Apple">Apple</option>
+                        <option value="Lenovo">Lenovo</option>
+                        <option value="Dell">Dell</option>
+                        <option value="Acer">Acer</option>
+                        <option value="Asus">Asus</option>
+                    </select>
                     <div class="invalid-feedback">La marca es obligatoria</div>
                 </div>
                 
                 <!-- MODELO -->
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Modelo <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" th:field="*{modelo}" required/>
+                    <select class="form-select" th:field="*{modelo}" required>
+                        <option value="">-- Seleccionar modelo --</option>
+                        <option value="Elitebook 840 G9">Elitebook 840 G9</option>
+                        <option value="Elitebook 840 G11">Elitebook 840 G11</option>
+                        <option value="Elitebook 820 G4">Elitebook 820 G4</option>
+                        <option value="Elitebook 8 G1i">Elitebook 8 G1i</option>
+                        <option value="ZBook Firefly 14 G7">ZBook Firefly 14 G7</option>
+                        <option value="ZBook Firefly 14 G8">ZBook Firefly 14 G8</option>
+                        <option value="ZBook Firefly 14 G10">ZBook Firefly 14 G10</option>
+                        <option value="ProOne 600 G3">ProOne 600 G3</option>
+                        <option value="ProOne 400 G4">ProOne 400 G4</option>
+                        <option value="MacBook Air 13 M3">MacBook Air 13 M3</option>
+                    </select>
                     <div class="invalid-feedback">El modelo es obligatorio</div>
                 </div>
                 
