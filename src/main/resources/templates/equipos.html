@@ -30,7 +30,12 @@
                 <th>Tipo</th>
                 <th>Marca</th>
                 <th>Modelo</th>
+                <th>Serie</th>
+                <th>Estatus</th>
+                <th>No. Empleado</th>
                 <th>Responsable</th>
+                <th>Puesto</th>
+                <th>Localidad</th>
                 <th>Inventario</th>
                 <th>Editar</th>
                 <th sec:authorize="hasRole('ADMIN')">Eliminar</th>
@@ -43,7 +48,12 @@
                 <td th:text="${e.tipo}"></td>
                 <td th:text="${e.marca}"></td>
                 <td th:text="${e.modelo}"></td>
+                <td th:text="${e.serie} ?: 'N/A'"></td>
+                <td th:text="${e.estatus} ?: 'N/A'"></td>
+                <td th:text="${e.noEmpleado} ?: 'N/A'"></td>
                 <td th:text="${e.responsable} ?: 'Sin asignar'"></td>
+                <td th:text="${e.puesto} ?: 'N/A'"></td>
+                <td th:text="${e.localidad} ?: 'N/A'"></td>
                 <td th:text="${e.inventarioId}"></td>
 
                 <!-- EDITAR: visible para TODOS -->

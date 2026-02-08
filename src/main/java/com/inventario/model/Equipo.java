@@ -23,9 +23,24 @@ public class Equipo {
     @Column(nullable = false, length = 100)
     private String modelo;
 
-    @Column(length = 100)
+    @Column(length = 50)
+    private String serie;
+
+    @Column(length = 50)
+    private String estatus;
+
+    @Column(name = "no_empleado", length = 50)
+    private String noEmpleado;
+
+    @Column(length = 50)
     private String responsable;
+
+    @Column(length = 50)
+    private String puesto;
 
     @Column(name = "inventario_id")
     private Long inventarioId;
+
+    @Column(length = 50)
+    private String localidad;
 }
