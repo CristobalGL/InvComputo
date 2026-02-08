@@ -33,9 +33,14 @@ public class FormatoController {
 
     // Paso 1: buscar equipo para generar FO-MI-01
     @GetMapping("/generar/fo-mi-01")
-    public String buscarParaResguardo(Model model) {
-        model.addAttribute("equipos", equipoService.listarTodos());
-        return "buscar-resguardo"; // crearemos esta vista
+    public String buscarParaResguardo(Model model, Principal principal) {
+
+        String correo = principal.getName();
+
+        model.addAttribute("equipos",
+                equipoService.obtenerEquiposSegunUsuario(correo));
+
+        return "buscar-resguardo";
     }
 
     // Paso 2: generar el PDF
@@ -43,9 +48,23 @@ public class FormatoController {
     public void generarResguardo(@RequestParam Long id,
                              HttpServletResponse response,
                              Principal principal) throws IOException {
-        Equipo equipo = equipoService.buscarPorId(id).orElseThrow();
-        String usuarioEntrega = principal.getName();
-                                
+        Equipo equipo = equipoService.buscarPorId(id)
+        .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
+
+        String correo = principal.getName();
+
+        // Verificamos que el equipo pertenezca al inventario del usuario
+        boolean autorizado = equipoService
+                .obtenerEquiposSegunUsuario(correo)
+                .stream()
+                .anyMatch(e -> e.getId().equals(id));
+
+        if(!autorizado){
+            throw new RuntimeException("No autorizado para generar este formato");
+        }
+
+        String usuarioEntrega = correo;
+                             
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=\"FO-MI-01_" + equipo.getCodigo() + ".pdf\"");
 
