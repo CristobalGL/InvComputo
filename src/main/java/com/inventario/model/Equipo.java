@@ -29,6 +29,9 @@ public class Equipo {
     @Column(length = 50)
     private String estatus;
 
+    @Column(length = 50)
+    private String garantia;
+
     @Column(name = "no_empleado", length = 50)
     private String noEmpleado;
 
