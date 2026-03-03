@@ -59,4 +59,19 @@ public class EquipoService {
         // Si SÍ tiene asignado → solo ese inventario
         return repository.findByInventarioId(usuario.getInventarioAsignado());
     }
+
+    public List<Equipo> obtenerEquiposSinGarantia(String correoUsuario) {
+
+        Usuario usuario = usuarioRepository.findByCorreo(correoUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Si NO tiene inventario asignado → puede ver TODOS los equipos sin garantía
+        if (usuario.getInventarioAsignado() == null) {
+            return repository.findByGarantia("No");
+        }
+
+        // Si SÍ tiene inventario asignado → solo ese inventario y sin garantía
+        return repository.findByInventarioIdAndGarantia(
+                usuario.getInventarioAsignado(), "No");
+    }
 }

@@ -170,4 +170,15 @@ public class FormatoController {
         cell.setPaddingBottom(30);
         return cell;
     }
+
+    @GetMapping("/generar/fo-mi-02")
+    public String buscarParaMantenimiento(Model model, Principal principal){
+
+    String correo = principal.getName();
+
+    model.addAttribute("equipos",
+            equipoService.obtenerEquiposSinGarantia(correo));
+
+     return "buscar-mantenimiento";
+    }
 }

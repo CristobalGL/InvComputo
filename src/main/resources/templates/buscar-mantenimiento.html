@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Generar FO-MI-02</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <h2 class="text-center mb-4 text-warning">
+        Generar FO-MI-02 - Mantenimiento de Equipo
+    </h2>
+
+    <div class="alert alert-info">
+        Solo se muestran equipos SIN garantía.
+    </div>
+
+    <div class="table-responsive shadow-sm">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Código</th>
+                    <th>Tipo</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Serie</th>
+                    <th>Garantía</th>
+                    <th>Responsable</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="e : ${equipos}">
+                    <td th:text="${e.codigo}"></td>
+                    <td th:text="${e.tipo}"></td>
+                    <td th:text="${e.marca}"></td>
+                    <td th:text="${e.modelo}"></td>
+                    <td th:text="${e.serie ?: 'N/A'}"></td>
+                    <td>
+                        <span class="badge bg-danger"
+                              th:text="${e.garantia}">
+                        </span>
+                    </td>
+                    <td th:text="${e.responsable}"></td>
+
+                    <td>
+                        <a th:href="@{/generar/pdf/mantenimiento(id=${e.id})}"
+                           class="btn btn-warning btn-sm">
+                            Generar FO-MI-02
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/dashboard" class="btn btn-secondary">
+            Volver al Dashboard
+        </a>
+    </div>
+</div>
+</body>
+</html>
