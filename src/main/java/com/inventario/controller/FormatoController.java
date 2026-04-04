@@ -181,4 +181,108 @@ public class FormatoController {
 
      return "buscar-mantenimiento";
     }
+
+    @GetMapping("/generar/fo-mi-03")
+    public String buscarParaFomi03(Model model, Principal principal) {
+
+        String correo = principal.getName();
+
+        model.addAttribute("equipos",
+                equipoService.obtenerEquiposSegunUsuario(correo));
+
+        return "buscar-dañado";
+    }
+
+    @GetMapping("/generar/pdf/fo-mi-03")
+    public void generarFomi03(@RequestParam Long id,
+                            HttpServletResponse response,
+                            Principal principal) throws IOException {
+
+        Equipo equipo = equipoService.buscarPorId(id)
+                .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
+
+        String correo = principal.getName();
+
+        boolean autorizado = equipoService
+                .obtenerEquiposSegunUsuario(correo)
+                .stream()
+                .anyMatch(e -> e.getId().equals(id));
+
+        if (!autorizado) {
+            throw new RuntimeException("No autorizado");
+        }
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition",
+                "attachment; filename=\"FO-MI-03_" + equipo.getCodigo() + ".pdf\"");
+
+        PdfWriter writer = new PdfWriter(response.getOutputStream());
+        PdfDocument pdf = new PdfDocument(writer);
+        Document document = new Document(pdf, PageSize.LETTER);
+        document.setMargins(70, 50, 50, 50);
+
+        // Título
+        document.add(new Paragraph("FORMATO DE BAJA / REPORTE DE EQUIPO")
+                .setBold()
+                .setFontSize(16)
+                .setTextAlignment(TextAlignment.CENTER));
+
+        document.add(new Paragraph("FO-MI-03")
+                .setBold()
+                .setFontSize(14)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setMarginBottom(20));
+
+        // Tabla
+        float[] columnWidths = {150, 350};
+        Table table = new Table(columnWidths);
+        table.setWidth(500);
+
+        table.addCell(crearCelda("Código:"));
+        table.addCell(crearCelda(equipo.getCodigo()));
+
+        table.addCell(crearCelda("Tipo:"));
+        table.addCell(crearCelda(equipo.getTipo()));
+
+        table.addCell(crearCelda("Marca:"));
+        table.addCell(crearCelda(equipo.getMarca()));
+
+        table.addCell(crearCelda("Modelo:"));
+        table.addCell(crearCelda(equipo.getModelo()));
+
+        table.addCell(crearCelda("Serie:"));
+        table.addCell(crearCelda(
+                equipo.getSerie() != null ? equipo.getSerie() : "N/A"));
+
+        table.addCell(crearCelda("Motivo de baja:"));
+        table.addCell(crearCelda("__________________________________"));
+
+        document.add(table);
+
+        document.add(new Paragraph("\nObservaciones:\n\n_____________________________\n\n")
+                .setFontSize(11));
+
+        // Firmas
+        Table firmas = new Table(2);
+        firmas.setWidth(500);
+
+        String fechaHoy = LocalDate.now()
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+        firmas.addCell(crearCeldaFirma("RESPONSABLE"));
+        firmas.addCell(crearCeldaFirma("AUTORIZA"));
+
+        firmas.addCell(crearCeldaFirma("Nombre: " + correo));
+        firmas.addCell(crearCeldaFirma("Nombre: __________________"));
+
+        firmas.addCell(crearCeldaFirma("Fecha: " + fechaHoy));
+        firmas.addCell(crearCeldaFirma("Fecha: " + fechaHoy));
+
+        firmas.addCell(crearCeldaFirma("Firma: __________________"));
+        firmas.addCell(crearCeldaFirma("Firma: __________________"));
+
+        document.add(firmas);
+
+        document.close();
+    }
 }

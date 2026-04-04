@@ -1,0 +1,19 @@
+Claves de Sistema de Inventario
+
+Hugo_Lazcano
+Hugo.sop
+
+Eva_Dzib
+Eva.sop
+
+Santiago_Hernandez
+Santiago.sop
+
+Cristobal_Gonzalez
+Cristobal.sop
+
+Coordinador1
+coor.sis
+
+Admin
+Admin.sis
