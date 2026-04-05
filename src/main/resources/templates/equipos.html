@@ -121,8 +121,8 @@
                 <td th:text="${e.noEmpleado} ?: 'N/A'"></td>
                 <td th:text="${e.responsable} ?: 'Sin asignar'"></td>
                 <td th:text="${e.puesto} ?: 'N/A'"></td>
-                <td th:text="${e.localidad} ?: 'N/A'"></td>
-                <td th:text="${e.inventarioId}"></td>
+                <td th:text="${e.inventario != null ? e.inventario.nombre : 'N/A'}"></td>
+                <td th:text="${e.inventario != null ? e.inventario.id : 'N/A'}"></td>
 
                 <!-- EDITAR: visible para TODOS -->
                 <td>

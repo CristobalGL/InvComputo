@@ -1,7 +1,9 @@
 package com.inventario.controller;
 
 import com.inventario.model.Equipo;
+import com.inventario.model.Inventario;
 import com.inventario.service.EquipoService;
+import com.inventario.repository.InventarioRepository;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,9 +17,11 @@ import java.util.List;
 public class EquipoController {
 
     private final EquipoService equipoService;
+    private final InventarioRepository inventarioRepo;
 
-    public EquipoController(EquipoService equipoService) {
+    public EquipoController(EquipoService equipoService, InventarioRepository inventarioRepo) {
         this.equipoService = equipoService;
+        this.inventarioRepo = inventarioRepo;
     }
 
     @GetMapping("/equipos")
@@ -45,18 +49,32 @@ public class EquipoController {
     @GetMapping("/equipos/nuevo")
     @PreAuthorize("hasRole('ADMIN')")
     public String nuevoEquipo(Model model) {
-        model.addAttribute("equipo", new Equipo());
+
+        Equipo equipo = new Equipo();
+
+        model.addAttribute("equipo", equipo);
+        model.addAttribute("inventarios", inventarioRepo.findAll());
         model.addAttribute("titulo", "Nuevo Equipo");
+
         return "formulario";
     }
 
     @PostMapping("/equipos/guardar")
     @PreAuthorize("hasAnyRole('ADMIN','COORDINADOR','USER')")
     public String guardarEquipo(@ModelAttribute Equipo equipo, RedirectAttributes flash) {
+
+        if (equipo.getInventarioId() != null) {
+            Inventario inv = inventarioRepo.findById(equipo.getInventarioId())
+                    .orElseThrow(() -> new RuntimeException("Inventario no encontrado"));
+
+            equipo.setInventario(inv); // ✅ AQUÍ SE SOLUCIONA TODO
+        }
+
         equipoService.guardar(equipo);
-        flash.addFlashAttribute("mensaje", 
+
+        flash.addFlashAttribute("mensaje",
             equipo.getId() != null ? "Equipo actualizado con éxito" : "Equipo agregado con éxito");
-        
+
         return "redirect:/equipos";
     }
 
@@ -65,8 +83,16 @@ public class EquipoController {
     public String editarEquipo(@PathVariable Long id, Model model, RedirectAttributes flash) {
         return equipoService.buscarPorId(id)
             .map(equipo -> {
+
+                // 🔥 EVITAR NULL
+                if (equipo.getInventario() == null) {
+                    equipo.setInventarioId(equipo.getInventario().getId());
+                }
+
                 model.addAttribute("equipo", equipo);
+                model.addAttribute("inventarios", inventarioRepo.findAll());
                 model.addAttribute("titulo", "Editar Equipo");
+
                 return "formulario";
             })
             .orElseGet(() -> {

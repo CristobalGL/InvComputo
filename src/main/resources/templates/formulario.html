@@ -168,15 +168,19 @@
             <!-- SOLO ADMIN PUEDE VER Y EDITAR -->
             <div class="col-md-6" sec:authorize="hasRole('ADMIN')">
                 <label class="form-label fw-bold">
-                    Inventario ID <span class="text-danger">*</span>
+                    Inventario <span class="text-danger">*</span>
                 </label>
-                <input type="number"
-                    class="form-control"
-                    th:field="*{inventarioId}"
-                    required
-                    min="1"/>
+
+                <select class="form-select" th:field="*{inventarioId}" required>
+                    <option value="">-- Seleccionar inventario --</option>
+                    <option th:each="inv : ${inventarios}"
+                            th:value="${inv.id}"
+                            th:text="${inv.descripcion}">
+                    </option>
+                </select>
+
                 <div class="invalid-feedback">
-                    El Inventario ID es obligatorio
+                    Selecciona un inventario
                 </div>
             </div>
 

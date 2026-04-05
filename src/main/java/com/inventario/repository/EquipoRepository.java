@@ -11,11 +11,11 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
     // Este método busca por el campo "codigo"
     Optional<Equipo> findByCodigo(String codigo);
 
-    List<Equipo> findByInventarioId(Long inventarioId);
+    List<Equipo> findByInventario_Id(Long inventarioId);
 
     List<Equipo> findByResponsableAndGarantia(String responsable, String garantia);
 
-    List<Equipo> findByInventarioIdAndGarantia(Long inventarioId, String garantia);
+    List<Equipo> findByInventario_IdAndGarantia(Long inventarioId, String garantia);
 
     List<Equipo> findByGarantia(String garantia);
 

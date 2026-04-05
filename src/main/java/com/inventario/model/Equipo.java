@@ -7,6 +7,7 @@ import lombok.*;
 @Table(name = "equipo")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
 public class Equipo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,9 +42,15 @@ public class Equipo {
     @Column(length = 50)
     private String puesto;
 
-    @Column(name = "inventario_id")
+    @Transient
     private Long inventarioId;
 
+    // RELACIÓN REAL
+    @ManyToOne
+    @JoinColumn(name = "inventario_id")
+    private Inventario inventario;
+
+    // opcional (puedes eliminarlo después)
     @Column(length = 50)
     private String localidad;
 }
