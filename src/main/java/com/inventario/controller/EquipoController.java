@@ -67,7 +67,7 @@ public class EquipoController {
             Inventario inv = inventarioRepo.findById(equipo.getInventarioId())
                     .orElseThrow(() -> new RuntimeException("Inventario no encontrado"));
 
-            equipo.setInventario(inv); // ✅ AQUÍ SE SOLUCIONA TODO
+            equipo.setInventario(inv);
         }
 
         equipoService.guardar(equipo);

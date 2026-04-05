@@ -151,19 +151,6 @@
                         maxlength="100"/>
                 </div>
 
-                <!-- LOCALIDAD -->
-                <div class="col-md-6" sec:authorize="hasRole('ADMIN')">
-                    <label class="form-label fw-bold">Localidad</label>
-                    <input type="text"
-                        class="form-control"
-                        th:field="*{localidad}"
-                        maxlength="100"/>
-                </div>
-                <input type="hidden"
-                sec:authorize="!hasRole('ADMIN')"
-                th:field="*{localidad}"/>
-
-            </div>
 
             <!-- SOLO ADMIN PUEDE VER Y EDITAR -->
             <div class="col-md-6" sec:authorize="hasRole('ADMIN')">

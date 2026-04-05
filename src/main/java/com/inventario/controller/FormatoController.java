@@ -107,9 +107,11 @@ public class FormatoController {
                 equipo.getSerie() != null ? equipo.getSerie() : "N/A"
         ));
 
-        table.addCell(crearCelda("Localidad:"));
+        table.addCell(crearCelda("Inventario:"));
         table.addCell(crearCelda(
-                equipo.getLocalidad() != null ? equipo.getLocalidad() : "N/A"
+                equipo.getInventario() != null
+                        ? equipo.getInventario().getDescripcion()
+                        : "N/A"
         ));
 
         document.add(table);

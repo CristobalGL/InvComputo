@@ -51,6 +51,6 @@ public class Equipo {
     private Inventario inventario;
 
     // opcional (puedes eliminarlo después)
-    @Column(length = 50)
-    private String localidad;
+    //@Column(length = 50)
+   // private String localidad;
 }
