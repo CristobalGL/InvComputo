@@ -107,6 +107,24 @@
                 <th>Editar</th>
                 <th sec:authorize="hasRole('ADMIN')">Eliminar</th>
             </tr>
+            <!-- FILTROS -->
+            <tr>
+                <th></th> <!-- ID -->
+                <th></th> <!-- Código -->
+                <th><select class="form-select filter" data-col="2"><option value="">Todos</option></select></th> <!-- Tipo -->
+                <th><select class="form-select filter" data-col="3"><option value="">Todos</option></select></th> <!-- Marca -->
+                <th><select class="form-select filter" data-col="4"><option value="">Todos</option></select></th> <!-- Modelo -->
+                <th></th> <!-- Serie -->
+                <th><select class="form-select filter" data-col="6"><option value="">Todos</option></select></th> <!-- Estatus -->
+                <th><select class="form-select filter" data-col="7"><option value="">Todos</option></select></th> <!-- Garantia -->
+                <th></th> <!-- No. Empleado -->
+                <th></th> <!-- Responsable -->
+                <th><select class="form-select filter" data-col="10"><option value="">Todos</option></select></th> <!-- Puesto -->
+                <th><select class="form-select filter" data-col="11"><option value="">Todos</option></select></th> <!-- Localidad -->
+                <th></th> <!-- Inventario -->
+                <th></th> <!-- Editar -->
+                <th></th> <!-- Eliminar -->
+            </tr>
         </thead>
         <tbody>
             <tr th:each="e : ${equipos}">
@@ -160,4 +178,52 @@ function toggleColumn(index) {
         }
     }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const table = document.querySelector("table");
+    const filters = document.querySelectorAll(".filter");
+
+    // 🔹 Generar opciones únicas para cada SELECT
+    filters.forEach(filter => {
+        const colIndex = filter.getAttribute("data-col");
+        const values = new Set();
+
+        [...table.tBodies[0].rows].forEach(row => {
+            const cell = row.cells[colIndex];
+            if (cell) values.add(cell.innerText.trim());
+        });
+
+        // Vaciar y crear opciones
+        filter.innerHTML = '<option value="">Todos</option>';
+        Array.from(values).sort().forEach(v => {
+            filter.innerHTML += `<option value="${v}">${v}</option>`;
+        });
+    });
+
+    // 🔹 Evento para filtrar
+    filters.forEach(filter => {
+        filter.addEventListener("change", applyFilters);
+    });
+
+    function applyFilters() {
+        const rows = table.tBodies[0].rows;
+
+        [...rows].forEach(row => {
+            let visible = true;
+
+            filters.forEach(filter => {
+                const colIndex = filter.getAttribute("data-col");
+                const value = filter.value.toLowerCase();
+                const cell = row.cells[colIndex];
+
+                if (cell && value) {
+                    const text = cell.innerText.toLowerCase();
+                    if (text !== value) visible = false;
+                }
+            });
+
+            row.style.display = visible ? "" : "none";
+        });
+    }
+});
 </script>

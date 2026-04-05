@@ -50,7 +50,4 @@ public class Equipo {
     @JoinColumn(name = "inventario_id")
     private Inventario inventario;
 
-    // opcional (puedes eliminarlo después)
-    //@Column(length = 50)
-   // private String localidad;
 }
