@@ -84,8 +84,8 @@ public class EquipoController {
         return equipoService.buscarPorId(id)
             .map(equipo -> {
 
-                // 🔥 EVITAR NULL
-                if (equipo.getInventario() == null) {
+                //EVITAR NULL
+                if (equipo.getInventario() != null) {
                     equipo.setInventarioId(equipo.getInventario().getId());
                 }
 
