@@ -40,7 +40,7 @@
                     <td th:text="${e.noEmpleado ?: 'N/A'}"></td>
                     <td th:text="${e.responsable ?: 'Sin asignar'}"></td>
                     <td th:text="${e.puesto ?: 'N/A'}"></td>
-                    <td th:text="${e.localidad ?: 'N/A'}"></td>
+                    <td th:text="${e.inventario?.descripcion ?: 'N/A'}"></td>
 
                     <td>
                         <a th:href="@{/generar/pdf/resguardo(id=${e.id})}"
